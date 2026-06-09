@@ -1,0 +1,30 @@
+{
+  "name": "media-extract",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Windows-friendly terminal scraper for public images and videos, with Meta-aware extraction and truthful reports.",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "media-extract": "./bin/media-extract.js"
+  },
+  "scripts": {
+    "start": "node ./bin/media-extract.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "media",
+    "scraper",
+    "playwright",
+    "facebook",
+    "ads-library",
+    "windows"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
+  },
+  "devDependencies": {}
+}
