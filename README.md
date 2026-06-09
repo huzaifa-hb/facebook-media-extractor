@@ -4,7 +4,7 @@ Meta-first Windows terminal scraper for Facebook Ads Library and Facebook photo/
 
 This tool is built for the exact problem where Meta pages show many creatives or photos and manual saving is not realistic. It opens the page in a real browser, scrolls dynamic content, watches media loaded by the page, validates real image/video files, removes duplicates, and writes a truthful report.
 
-It is not positioned as a general everyday website scraper. A generic webpage adapter exists only as a fallback when the same browser-capture workflow is useful outside Meta.
+It is not a general everyday website scraper. A generic webpage adapter exists only as a fallback when the same browser-capture workflow is useful outside Meta.
 
 It does not bypass login walls, private pages, paywalls, or platform restrictions. It only saves media that your browser can publicly load.
 
