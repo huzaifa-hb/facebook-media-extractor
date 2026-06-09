@@ -34,6 +34,9 @@ Options:
   --headful <bool>      Show browser. Default: false
   --min-bytes <n>       Minimum valid media byte size. Default: 12000
   --min-dimension <n>   Minimum valid image dimension. Default: 300
+
+Primary use:
+  Facebook Ads Library and Facebook profile/photo media pages. Generic webpage extraction is only a fallback.
 `;
 
 function log(message) {
@@ -57,7 +60,7 @@ async function launchBrowser(headful) {
       return await chromium.launch(options);
     } catch (fallbackError) {
       throw new Error(
-        "Could not launch Chrome or Playwright Chromium. Install Chrome, or run `npx playwright install chromium` inside the media-extractor folder.\n" +
+        "Could not launch Chrome or Playwright Chromium. Install Chrome, or run `npx playwright install chromium` inside the facebook-media-extractor folder.\n" +
           `Chrome error: ${error.message}\nPlaywright error: ${fallbackError.message}`
       );
     }

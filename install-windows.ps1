@@ -29,7 +29,7 @@ if (-not $IsWindows -and $env:OS -ne "Windows_NT") {
 }
 
 if (-not (Test-Path -LiteralPath $cli)) {
-    throw "Could not find the CLI at $cli. Run this installer from the media-extract repo folder."
+    throw "Could not find the CLI at $cli. Run this installer from the facebook-media-extractor repo folder."
 }
 
 Assert-Command -Name "node" -InstallMessage "Install Node.js LTS from https://nodejs.org/ and run this installer again."
@@ -101,8 +101,8 @@ function media-extract {
 }
 
 Write-Step "Checking the CLI..."
-& node $cli --help | Select-Object -First 14
+& node $cli --help | Select-Object -First 18
 
 Write-Host ""
 Write-Host "Done. Close PowerShell, open it again, then run:" -ForegroundColor Green
-Write-Host 'media-extract "https://example.com"'
+Write-Host 'media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE"'

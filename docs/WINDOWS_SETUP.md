@@ -1,6 +1,8 @@
 # Windows Setup
 
-This guide is for someone setting up `media-extract` on a Windows laptop or desktop for the first time.
+This guide is for someone setting up `facebook-media-extractor` on a Windows laptop or desktop for the first time.
+
+The installed terminal command is still named `media-extract`.
 
 ## 1. Install Node.js
 
@@ -41,11 +43,9 @@ git --version
 
 ```powershell
 cd "$env:USERPROFILE\Downloads"
-git clone https://github.com/YOUR-USER/media-extract.git
-cd media-extract
+git clone https://github.com/huzaifa-hb/facebook-media-extractor.git
+cd facebook-media-extractor
 ```
-
-Replace `https://github.com/YOUR-USER/media-extract.git` with the real GitHub URL.
 
 ## 4. Install the Command
 
@@ -61,16 +61,22 @@ This does three things:
 
 Close PowerShell and open it again.
 
-## 5. Run It
+## 5. Run It on a Meta URL
 
 ```powershell
-media-extract "https://example.com"
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE"
 ```
 
 For Facebook Ads Library:
 
 ```powershell
 media-extract "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=US&media_type=all&search_type=page&view_all_page_id=1039345822595722" --max-items 25
+```
+
+For a Facebook photos page:
+
+```powershell
+media-extract "https://www.facebook.com/somepage/photos" --max-items 50
 ```
 
 Saved files go here:
@@ -85,13 +91,13 @@ Run from inside the repo folder:
 
 ```powershell
 npm install
-node .\bin\media-extract.js "https://example.com"
+node .\bin\media-extract.js "FACEBOOK_ADS_LIBRARY_URL_HERE"
 ```
 
 or:
 
 ```powershell
-.\media-extract.ps1 "https://example.com"
+.\media-extract.ps1 "FACEBOOK_ADS_LIBRARY_URL_HERE"
 ```
 
 ## Common Problems
@@ -112,7 +118,7 @@ npx playwright install chromium
 
 - close PowerShell
 - open PowerShell again
-- run `media-extract "https://example.com"`
+- run `media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE"`
 
 Only thumbnails were saved:
 

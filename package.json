@@ -1,8 +1,8 @@
 {
-  "name": "media-extract",
+  "name": "facebook-media-extractor",
   "version": "0.1.0",
   "private": false,
-  "description": "Windows-friendly terminal scraper for public images and videos, with Meta-aware extraction and truthful reports.",
+  "description": "Meta-first Windows terminal scraper for Facebook Ads Library and Facebook photo/media pages, with truthful media reports.",
   "license": "MIT",
   "type": "commonjs",
   "bin": {
@@ -13,10 +13,11 @@
     "test": "node --test"
   },
   "keywords": [
-    "media",
+    "meta",
+    "facebook",
+    "facebook-ads-library",
     "scraper",
     "playwright",
-    "facebook",
     "ads-library",
     "windows"
   ],

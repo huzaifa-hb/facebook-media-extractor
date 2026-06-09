@@ -1,26 +1,34 @@
 # Usage
 
-## Basic Command
+This is a Meta-first extractor. Use it primarily for Facebook Ads Library and Facebook photo/media pages. Generic webpage extraction exists only as a fallback.
+
+## Basic Meta Command
 
 ```powershell
-media-extract "<url>"
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE"
 ```
 
-Example:
+Real Ads Library example:
 
 ```powershell
-media-extract "https://example.com/gallery"
+media-extract "https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=US&media_type=all&search_type=page&view_all_page_id=1039345822595722" --max-items 25
+```
+
+Facebook photos example:
+
+```powershell
+media-extract "https://www.facebook.com/somepage/photos" --max-items 50
 ```
 
 ## Useful Options
 
 ```powershell
-media-extract "<url>" --max-items 25
-media-extract "<url>" --media images
-media-extract "<url>" --media videos
-media-extract "<url>" --headful true
-media-extract "<url>" --scroll-rounds 120
-media-extract "<url>" --out "C:\Users\YourName\Downloads\my-media-run"
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --max-items 25
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --media images
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --media videos
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --headful true
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --scroll-rounds 120
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --out "C:\Users\YourName\Downloads\facebook-media-run"
 ```
 
 ## Adapter Selection
@@ -30,10 +38,12 @@ The default is `--adapter auto`.
 Use a manual adapter only when you know the page type:
 
 ```powershell
-media-extract "<url>" --adapter facebook-ads-library
-media-extract "<url>" --adapter facebook-profile
-media-extract "<url>" --adapter generic-page
+media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --adapter facebook-ads-library
+media-extract "FACEBOOK_PHOTOS_URL_HERE" --adapter facebook-profile
+media-extract "PUBLIC_NON_META_URL_HERE" --adapter generic-page
 ```
+
+Use `generic-page` only as a fallback, not as the main purpose of this repo.
 
 ## Reading Results
 
@@ -65,4 +75,4 @@ media-extract "FACEBOOK_ADS_LIBRARY_URL_HERE" --max-items 50 --scroll-rounds 140
 
 ## Important Limits
 
-This tool saves public/browser-accessible media. It cannot guarantee original uploaded files. For Meta pages, `largest_public_cdn` means the largest valid public CDN variant found during that run.
+This tool saves public/browser-accessible Meta media. It cannot guarantee original uploaded files. For Meta pages, `largest_public_cdn` means the largest valid public CDN variant found during that run.
