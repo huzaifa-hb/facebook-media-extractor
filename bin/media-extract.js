@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
 const {
+  mediaRole,
+  mediaCounts,
   appendJsonl,
   classifyTruthLabel,
   defaultOutputDir,
@@ -79,7 +81,10 @@ function addCandidate(map, candidate, adapter) {
   const url = htmlDecode(candidate.url);
   if (isLikelyBadAssetUrl(url, adapter)) return;
   const kind = candidate.kind || contentTypeKind(candidate.contentType) || "unknown";
-  map.set(url, { ...candidate, url, kind });
+  const previous = map.get(url);
+  const role = previous?.role === "video_thumbnail" || candidate.source === "dom-video-poster"
+    ? "video_thumbnail" : candidate.role;
+  map.set(url, { ...previous, ...candidate, url, kind, ...(role ? { role } : {}) });
 }
 
 async function collectDomCandidates(page, adapter) {
@@ -279,7 +284,7 @@ function writeReport({ outDir, inputUrl, adapter, saved, rejected, duplicates, a
     return acc;
   }, {});
   const topImages = saved
-    .filter((item) => item.kind === "image")
+    .filter((item) => mediaRole(item) === "image")
     .sort((a, b) => (b.width || 0) * (b.height || 0) - (a.width || 0) * (a.height || 0))
     .slice(0, 8);
   const lines = [
@@ -292,6 +297,9 @@ function writeReport({ outDir, inputUrl, adapter, saved, rejected, duplicates, a
     "## Summary",
     "",
     `- Saved assets: ${saved.length}`,
+    `- Images: ${mediaCounts(saved).images}`,
+    `- Videos: ${mediaCounts(saved).videos}`,
+    `- Video thumbnails: ${mediaCounts(saved).thumbnails}`,
     `- Rejected candidates: ${rejected}`,
     `- Duplicate assets: ${duplicates}`,
     `- Failed candidates: ${failed}`,
@@ -370,7 +378,7 @@ async function run() {
     await scrollPage(page, options, adapter);
 
     const domCandidates = await collectDomCandidates(page, adapter);
-    for (const [url, candidate] of domCandidates.entries()) candidates.set(url, candidate);
+    for (const candidate of domCandidates.values()) addCandidate(candidates, candidate, adapter);
 
     if (adapter === "facebook-ads-library") {
       adCards = await collectAdCards(page);
@@ -408,12 +416,14 @@ async function run() {
         sourceUrl: best.url
       });
       const file = outputFilename({ index, url: best.url, info: best.info, hash });
-      const folder = best.info.kind === "video" ? dirs.videos : dirs.images;
+      const role = mediaRole({ ...candidate, kind: best.info.kind });
+      const folder = role === "video_thumbnail" ? dirs.thumbnails : role === "video" ? dirs.videos : dirs.images;
       fs.writeFileSync(path.join(folder, file), best.buffer);
 
       const manifest = {
         file: path.relative(outDir, path.join(folder, file)).replace(/\\/g, "/"),
         kind: best.info.kind,
+        role,
         truth_label: truthLabel,
         bytes: best.buffer.length,
         width: best.info.width || null,
@@ -439,6 +449,8 @@ async function run() {
   log("");
   log("Done.");
   log(`  Saved: ${saved.length}`);
+  const counts = mediaCounts(saved);
+  log(`  Images: ${counts.images}; videos: ${counts.videos}; video thumbnails: ${counts.thumbnails}`);
   log(`  Rejected: ${rejected}`);
   log(`  Duplicates: ${duplicates}`);
   log(`  Failed: ${failed}`);

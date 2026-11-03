@@ -140,6 +140,7 @@ media-extract-runs\
     assets\
       images\
       videos\
+    Thumbnails\
     metadata\
       ad_cards.jsonl
     manifest.jsonl
@@ -151,6 +152,8 @@ Important files:
 
 - `assets\images\`: saved images
 - `assets\videos\`: saved videos
+- `Thumbnails/`: video poster images, counted separately from image creatives
+- Manifest `kind` records the file type; `role` distinguishes `image`, `video`, and `video_thumbnail`.
 - `metadata\ad_cards.jsonl`: Facebook Ads Library card text and visible metadata, when available
 - `manifest.jsonl`: one record per saved asset
 - `rejected.jsonl`: candidates rejected as too small, duplicate, invalid, or unreachable

@@ -80,3 +80,20 @@ test("defaultOutputDir uses the user Downloads folder", () => {
   const out = defaultOutputDir("https://example.com/page");
   assert.match(out.replace(/\\/g, "/"), /\/Downloads\/media-extract-runs\/example-com-/);
 });
+
+test("video posters are routed separately and excluded from image counts", () => {
+  const fs = require("node:fs");
+  const os = require("node:os");
+  const path = require("node:path");
+  const { mediaRole, mediaCounts, ensureOutputTree } = require("../lib/media-core");
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "media-extract-"));
+  try {
+    const dirs = ensureOutputTree(root);
+    assert.equal(dirs.thumbnails, path.join(root, "Thumbnails"));
+    assert.ok(fs.statSync(dirs.thumbnails).isDirectory());
+    const poster = { kind: "image", source: "dom-video-poster" };
+    assert.equal(mediaRole(poster), "video_thumbnail");
+    assert.equal(mediaRole({ kind: "image", role: "video_thumbnail", source: "network" }), "video_thumbnail");
+    assert.deepEqual(mediaCounts([poster, { kind: "image", source: "dom-image" }, { kind: "video" }]), { images: 1, videos: 1, thumbnails: 1 });
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
